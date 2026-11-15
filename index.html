@@ -105,8 +105,8 @@
                             <i class="fa-regular fa-user text-brand-400"></i>
                         </div>
                         <select id="gate-role" class="w-full bg-white border border-brand-100 rounded-2xl pl-10 pr-4 py-3.5 text-sm font-medium text-surface-800 focus:ring-2 focus:ring-brand-300 outline-none cursor-pointer appearance-none shadow-sm transition-all">
-                            <option value="Saya">Saya</option>
-                            <option value="Pacar">Pacar</option>
+                            <option value="Emann">Emann</option>
+                            <option value="Paramayu">Paramayu</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                             <i class="fa-solid fa-chevron-down text-surface-400 text-xs"></i>
@@ -169,29 +169,34 @@
                         </button>
                     </nav>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 sm:gap-3">
                         <!-- Supabase Cloud Status Indicator -->
-                        <button onclick="app.openSupabaseModal()" class="flex items-center bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-full px-3 py-1.5 text-xs font-semibold text-surface-700 transition-all">
-                            <span id="db-status-dot" class="w-2 h-2 rounded-full bg-amber-400 mr-2 animate-pulse"></span>
-                            <span id="db-status-text" class="hidden sm:inline">Local Storage</span>
+                        <button onclick="app.openSupabaseModal()" class="flex items-center bg-surface-100 hover:bg-surface-200 border border-surface-200 rounded-full px-3 py-1.5 text-xs font-semibold text-surface-700 transition-all" title="Status Koneksi Cloud">
+                            <span id="db-status-dot" class="w-2 h-2 rounded-full bg-amber-400 mr-1.5 sm:mr-2 animate-pulse"></span>
+                            <span id="db-status-text" class="text-[11px] sm:text-xs">Menghubungkan...</span>
+                        </button>
+
+                        <!-- Tombol Sync Manual -->
+                        <button onclick="app.manualSync()" id="btn-manual-sync" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-surface-100 hover:bg-brand-50 text-surface-600 hover:text-brand-600 border border-surface-200 flex items-center justify-center transition-all" title="Sinkronkan Data Sekarang">
+                            <i id="sync-icon" class="fa-solid fa-rotate text-xs"></i>
                         </button>
 
                         <div class="hidden sm:block relative">
                             <select id="global-filter" onchange="app.changeViewFilter()" class="appearance-none bg-surface-100 border border-surface-200 rounded-full pl-4 pr-9 py-2 text-xs font-semibold text-surface-700 focus:ring-2 focus:ring-brand-300 outline-none cursor-pointer transition-all hover:bg-surface-200">
                                 <option value="Gabungan">Lihat: Berdua</option>
-                                <option value="Saya">Lihat: Saya</option>
-                                <option value="Pacar">Lihat: Pacar</option>
+                                <option value="Emann">Lihat: Emann</option>
+                                <option value="Paramayu">Lihat: Paramayu</option>
                             </select>
                             <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-surface-400 pointer-events-none"></i>
                         </div>
-                        <div class="flex items-center bg-brand-50 border border-brand-100 rounded-full pl-1.5 pr-4 py-1.5 text-xs text-brand-700 font-semibold gap-2">
+                        <div class="flex items-center bg-brand-50 border border-brand-100 rounded-full pl-1.5 pr-3 sm:pr-4 py-1.5 text-xs text-brand-700 font-semibold gap-1.5 sm:gap-2">
                             <div class="w-6 h-6 rounded-full bg-brand-200 flex items-center justify-center">
                                 <i class="fa-solid fa-user text-[10px] text-brand-600"></i>
                             </div>
                             <span id="current-user-role">User</span>
                         </div>
-                        <button onclick="app.logout()" class="w-9 h-9 rounded-full bg-surface-100 hover:bg-rose-100 text-surface-500 hover:text-rose-600 border border-surface-200 hover:border-rose-200 flex items-center justify-center transition-all" title="Keluar">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <button onclick="app.logout()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-surface-100 hover:bg-rose-100 text-surface-500 hover:text-rose-600 border border-surface-200 hover:border-rose-200 flex items-center justify-center transition-all" title="Keluar">
+                            <i class="fa-solid fa-arrow-right-from-bracket text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
@@ -206,17 +211,18 @@
                 </div>
                 <select id="mobile-global-filter" onchange="app.changeViewFilter(this.value)" class="flex-grow bg-transparent border-none text-sm font-semibold text-surface-800 outline-none focus:ring-0">
                     <option value="Gabungan">Data Gabungan Berdua</option>
-                    <option value="Saya">Data Hanya Saya</option>
-                    <option value="Pacar">Data Hanya Pacar</option>
+                    <option value="Emann">Data Hanya Emann</option>
+                    <option value="Paramayu">Data Hanya Paramayu</option>
                 </select>
             </div>
 
             <!-- DASHBOARD VIEW -->
             <section id="view-dashboard" class="view-section space-y-6 block animate-[fadeIn_0.3s_ease-out]">
-                <div class="bg-gradient-to-br from-brand-400 via-brand-500 to-orange-400 rounded-3xl p-6 md:p-8 text-white shadow-soft flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden border border-white/20">
-                    <div class="absolute -right-10 -bottom-10 opacity-20 pointer-events-none">
-                        <i class="fa-solid fa-comments-dollar text-[12rem] mix-blend-overlay"></i>
-                    </div>
+            <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-100 text-xs text-amber-800 space-y-1.5 mb-4">
+                <p class="font-bold"><i class="fa-solid fa-circle-info text-amber-600 mr-1"></i> Mode Berbagi Terpisah</p>
+                <p class="text-[11px] leading-relaxed">Tabel yang digunakan: <code class="font-mono font-bold">cashflow_state</code> (Terpisah dari Abskas Pro).</p>
+                <p id="supabase-error-detail" class="hidden text-[11px] text-rose-600 font-semibold bg-rose-50 border border-rose-200 rounded-xl p-2 mt-1"></p>
+            </div>
                     
                     <div class="relative z-10 max-w-lg">
                         <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-3 border border-white/30">
@@ -686,6 +692,7 @@
             <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-100 text-xs text-amber-800 space-y-1 mb-4">
                 <p class="font-bold"><i class="fa-solid fa-circle-info text-amber-600 mr-1"></i> Mode Berbagi Terpisah</p>
                 <p class="text-[11px] leading-relaxed">Tabel yang digunakan: <code class="font-mono font-bold">cashflow_state</code> (Terpisah dari Abskas Pro).</p>
+                <p id="supabase-error-detail" class="hidden text-[11px] font-semibold text-rose-600 pt-1 border-t border-amber-200/70"></p>
             </div>
 
             <form onsubmit="app.saveSupabaseConfig(event)" class="space-y-4">
@@ -776,6 +783,7 @@
         
         let state = {
             transactions: [],
+            deletedTxIds: [],
             categories: {
                 expense: ['Makan', 'Transportasi', 'Kencan', 'Tabungan Nikah', 'Dana Aman', 'Tagihan', 'Belanja', 'Kado/Hadiah', 'Lainnya'],
                 income: ['Gaji Bulanan', 'Uang Saku', 'Bonus', 'Investasi', 'Lainnya']
@@ -792,6 +800,9 @@
                 accountHolder: 'Tabungan Kita'
             },
             meetings: [],
+            deletedTxIds: [],
+            deletedMeetingIds: [],
+            updatedAt: 0,
             supabaseUrl: DEFAULT_SUPABASE_URL,
             supabaseKey: DEFAULT_SUPABASE_KEY
         };
@@ -803,6 +814,14 @@
             confirmCallback: null,
             supabaseClient: null,
             pollingInterval: null,
+            lastSyncError: '',
+            isSyncing: false,
+
+            normalizeRoleName(name) {
+                if(name === 'Saya') return 'Emann';
+                if(name === 'Pacar') return 'Paramayu';
+                return name || 'Emann';
+            },
 
             init() {
                 this.loadData();
@@ -812,6 +831,19 @@
                 document.getElementById('input-date').value = today;
                 document.getElementById('filter-month-history').value = today.substring(0, 7);
                 document.getElementById('meeting-date').value = today;
+
+                // Auto-sync saat layar iPhone/HP dibuka kembali atau pindah tab
+                document.addEventListener('visibilitychange', () => {
+                    if(document.visibilityState === 'visible' && this.supabaseClient) {
+                        this.fetchFromSupabase();
+                    }
+                });
+                window.addEventListener('focus', () => {
+                    if(this.supabaseClient) this.fetchFromSupabase();
+                });
+                window.addEventListener('online', () => {
+                    if(this.supabaseClient) this.fetchFromSupabase();
+                });
             },
 
             loadData() {
@@ -822,14 +854,32 @@
                         if(!parsed.targets) parsed.targets = { nikah: 50000000, nikahDate: '2030-10-10', aman: 10000000, date: 400000 };
                         if(!parsed.bankAccount) parsed.bankAccount = { bankName: 'Seabank / BCA', accountNumber: '', accountHolder: 'Tabungan Kita' };
                         if(!parsed.meetings) parsed.meetings = [];
+                        if(!parsed.deletedTxIds) parsed.deletedTxIds = [];
+                        if(!parsed.deletedMeetingIds) parsed.deletedMeetingIds = [];
+                        if(!parsed.updatedAt) parsed.updatedAt = 0;
                         if(!parsed.supabaseUrl) parsed.supabaseUrl = DEFAULT_SUPABASE_URL;
                         if(!parsed.supabaseKey) parsed.supabaseKey = DEFAULT_SUPABASE_KEY;
                         
                         if(!parsed.categories.expense.includes('Tabungan Nikah')) parsed.categories.expense.push('Tabungan Nikah');
                         if(!parsed.categories.expense.includes('Dana Aman')) parsed.categories.expense.push('Dana Aman');
                         if(!parsed.categories.expense.includes('Kencan')) parsed.categories.expense.push('Kencan');
+
+                        // Migrasi otomatis nama lama (Saya -> Emann, Pacar -> Paramayu)
+                        if(Array.isArray(parsed.transactions)) {
+                            parsed.transactions = parsed.transactions.map(t => ({
+                                ...t,
+                                owner: this.normalizeRoleName(t.owner)
+                            }));
+                        }
+                        if(Array.isArray(parsed.meetings)) {
+                            parsed.meetings = parsed.meetings.map(m => ({
+                                ...m,
+                                author: this.normalizeRoleName(m.author)
+                            }));
+                        }
                         
                         state = parsed;
+                        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
                     } 
                     catch(e) { console.error("Error parsing local storage", e); }
                 }
@@ -837,9 +887,12 @@
                 this.initSupabase();
             },
 
-            saveData() {
+            saveData(pushCloud = true) {
+                state.updatedAt = Date.now();
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
-                this.syncToSupabase();
+                if(pushCloud) {
+                    this.syncToSupabase();
+                }
             },
 
             // --- SUPABASE SYNC MODULE ---
@@ -852,69 +905,186 @@
                 if(state.supabaseUrl && state.supabaseKey && window.supabase) {
                     try {
                         this.supabaseClient = window.supabase.createClient(state.supabaseUrl, state.supabaseKey);
-                        this.updateDbStatusIndicator(true);
+                        this.updateDbStatusIndicator('connecting');
                         this.fetchFromSupabase();
                         this.subscribeSupabaseRealtime();
+                        this.startPollingFallback();
                     } catch(e) {
                         console.error("Supabase Client Error:", e);
-                        this.updateDbStatusIndicator(false);
+                        this.lastSyncError = e.message || 'Gagal inisialisasi Supabase';
+                        this.updateDbStatusIndicator('error');
                     }
                 } else {
-                    this.updateDbStatusIndicator(false);
+                    this.updateDbStatusIndicator('offline');
                 }
             },
 
-            updateDbStatusIndicator(isConnected) {
+            updateDbStatusIndicator(status) {
                 const dot = document.getElementById('db-status-dot');
                 const txt = document.getElementById('db-status-text');
                 if(!dot || !txt) return;
 
-                if(isConnected) {
-                    dot.className = "w-2 h-2 rounded-full bg-emerald-400 mr-2";
-                    txt.innerText = "Supabase Live";
+                if(status === 'connected') {
+                    dot.className = "w-2 h-2 rounded-full bg-emerald-500 mr-1.5 sm:mr-2";
+                    txt.innerText = "Cloud Aktif";
+                } else if(status === 'connecting') {
+                    dot.className = "w-2 h-2 rounded-full bg-amber-400 mr-1.5 sm:mr-2 animate-pulse";
+                    txt.innerText = "Menghubungkan...";
+                } else if(status === 'error') {
+                    dot.className = "w-2 h-2 rounded-full bg-rose-500 mr-1.5 sm:mr-2 animate-pulse";
+                    txt.innerText = "Sync Gagal";
                 } else {
-                    dot.className = "w-2 h-2 rounded-full bg-amber-400 mr-2 animate-pulse";
-                    txt.innerText = "Local Storage";
+                    dot.className = "w-2 h-2 rounded-full bg-amber-400 mr-1.5 sm:mr-2";
+                    txt.innerText = "Offline";
                 }
             },
 
-            async fetchFromSupabase() {
-                if(!this.supabaseClient) return;
+            mergeCloudAndLocal(cloudState) {
+                const deletedTxSet = new Set([
+                    ...(state.deletedTxIds || []),
+                    ...(cloudState.deletedTxIds || [])
+                ]);
+                const deletedMeetingSet = new Set([
+                    ...(state.deletedMeetingIds || []),
+                    ...(cloudState.deletedMeetingIds || [])
+                ]);
+
+                // Gabungkan transaksi dari HP Emann & HP Paramayu tanpa saling menimpa
+                const txMap = new Map();
+                const allTxs = [...(cloudState.transactions || []), ...(state.transactions || [])];
+                allTxs.forEach(rawTx => {
+                    if(!rawTx || deletedTxSet.has(rawTx.id)) return;
+                    const tx = { ...rawTx, owner: this.normalizeRoleName(rawTx.owner) };
+                    const existing = txMap.get(tx.id);
+                    if(!existing) {
+                        txMap.set(tx.id, tx);
+                    } else {
+                        // Pertahankan status verifikasi transfer terbaru
+                        const mergedVerified = existing.isTransferred === true || tx.isTransferred === true;
+                        txMap.set(tx.id, {
+                            ...existing,
+                            ...tx,
+                            isTransferred: mergedVerified,
+                            transferredAt: tx.transferredAt || existing.transferredAt || null
+                        });
+                    }
+                });
+
+                // Gabungkan catatan rapat
+                const meetingMap = new Map();
+                const allMeetings = [...(cloudState.meetings || []), ...(state.meetings || [])];
+                allMeetings.forEach(rawM => {
+                    if(!rawM || deletedMeetingSet.has(rawM.id)) return;
+                    const m = { ...rawM, author: this.normalizeRoleName(rawM.author) };
+                    meetingMap.set(m.id, m);
+                });
+
+                // Gabungkan kategori unik
+                const expCats = Array.from(new Set([
+                    ...(state.categories?.expense || []),
+                    ...(cloudState.categories?.expense || [])
+                ]));
+                const incCats = Array.from(new Set([
+                    ...(state.categories?.income || []),
+                    ...(cloudState.categories?.income || [])
+                ]));
+
+                const cloudIsNewer = (cloudState.updatedAt || 0) >= (state.updatedAt || 0);
+
+                return {
+                    ...state,
+                    transactions: Array.from(txMap.values()).sort((a, b) => b.timestamp - a.timestamp),
+                    meetings: Array.from(meetingMap.values()),
+                    categories: { expense: expCats, income: incCats },
+                    targets: cloudIsNewer && cloudState.targets ? cloudState.targets : state.targets,
+                    bankAccount: cloudIsNewer && cloudState.bankAccount ? cloudState.bankAccount : state.bankAccount,
+                    deletedTxIds: Array.from(deletedTxSet),
+                    deletedMeetingIds: Array.from(deletedMeetingSet),
+                    updatedAt: Math.max(state.updatedAt || 0, cloudState.updatedAt || 0),
+                    supabaseUrl: state.supabaseUrl,
+                    supabaseKey: state.supabaseKey
+                };
+            },
+
+            async fetchFromSupabase(showFeedback = false) {
+                if(!this.supabaseClient || this.isSyncing) return;
+                this.isSyncing = true;
                 try {
                     const { data, error } = await this.supabaseClient
                         .from(SUPABASE_TABLE_NAME)
                         .select('data')
                         .eq('id', SUPABASE_ROW_ID)
-                        .single();
+                        .maybeSingle();
+
+                    if(error) {
+                        this.lastSyncError = `${error.message} (Kode: ${error.code || 'ERR'})`;
+                        this.updateDbStatusIndicator('error');
+                        if(showFeedback) this.showToast("Gagal sinkronisasi ke Cloud. Cek pengaturan database!", "error");
+                        return;
+                    }
+
+                    this.lastSyncError = '';
+                    this.updateDbStatusIndicator('connected');
 
                     if(data && data.data) {
-                        const cloudState = data.data;
-                        state = {
-                            ...state,
-                            ...cloudState,
-                            supabaseUrl: state.supabaseUrl,
-                            supabaseKey: state.supabaseKey
-                        };
+                        const beforeCount = state.transactions.length;
+                        const cloudCount = (data.data.transactions || []).length;
+                        state = this.mergeCloudAndLocal(data.data);
                         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
-                        
+
+                        // Jika HP ini punya data lokal yang belum ada di Cloud (misal inputan Paramayu), langsung upload!
+                        if(state.transactions.length > cloudCount || state.meetings.length > (data.data.meetings || []).length) {
+                            await this.syncToSupabase();
+                        }
+
                         if(!document.getElementById('app-container').classList.contains('hidden')) {
                             this.renderCurrentView();
                         }
+                        if(showFeedback) {
+                            const diff = state.transactions.length - beforeCount;
+                            this.showToast(diff > 0 ? `Sinkron berhasil! +${diff} data baru masuk 🎉` : "Data sudah paling terbaru ✓");
+                        }
+                    } else {
+                        // Baris data belum ada di Supabase, inisialisasi sekarang
+                        await this.syncToSupabase();
+                        if(showFeedback) this.showToast("Database Cloud berhasil diinisialisasi ✓");
                     }
                 } catch(e) {
-                    console.warn("Initial Supabase fetch note:", e);
+                    this.lastSyncError = e.message || 'Koneksi jaringan bermasalah';
+                    this.updateDbStatusIndicator('error');
+                    if(showFeedback) this.showToast("Koneksi Cloud terputus.", "error");
+                } finally {
+                    this.isSyncing = false;
                 }
             },
 
             async syncToSupabase() {
                 if(!this.supabaseClient) return;
                 try {
-                    await this.supabaseClient
+                    const { error } = await this.supabaseClient
                         .from(SUPABASE_TABLE_NAME)
-                        .upsert({ id: SUPABASE_ROW_ID, data: state, updated_at: new Date() });
+                        .upsert({ id: SUPABASE_ROW_ID, data: state, updated_at: new Date().toISOString() });
+
+                    if(error) {
+                        this.lastSyncError = `${error.message} (Kode: ${error.code || 'ERR'})`;
+                        this.updateDbStatusIndicator('error');
+                        console.warn("Supabase upsert error:", error);
+                    } else {
+                        this.lastSyncError = '';
+                        this.updateDbStatusIndicator('connected');
+                    }
                 } catch(e) {
+                    this.lastSyncError = e.message || 'Gagal mengirim data';
+                    this.updateDbStatusIndicator('error');
                     console.warn("Pushing to Supabase failed:", e);
                 }
+            },
+
+            async manualSync() {
+                const icon = document.getElementById('sync-icon');
+                if(icon) icon.classList.add('fa-spin');
+                await this.fetchFromSupabase(true);
+                if(icon) setTimeout(() => icon.classList.remove('fa-spin'), 400);
             },
 
             canUseWebSocket(wsUrl) {
@@ -930,11 +1100,12 @@
 
             startPollingFallback() {
                 if(this.pollingInterval) clearInterval(this.pollingInterval);
+                // Sinkronisasi berkala setiap 8 detik agar aman di iOS Safari & Chrome
                 this.pollingInterval = setInterval(() => {
-                    if(!document.getElementById('app-container').classList.contains('hidden')) {
-                        this.fetchFromSupabase();
+                    if(document.visibilityState === 'visible' && !document.getElementById('app-container').classList.contains('hidden')) {
+                        this.fetchFromSupabase(false);
                     }
-                }, 15000);
+                }, 8000);
             },
 
             subscribeSupabaseRealtime() {
@@ -942,8 +1113,6 @@
 
                 const wsUrl = `${state.supabaseUrl.replace(/^http/, 'ws')}/realtime/v1/websocket?apikey=${encodeURIComponent(state.supabaseKey)}&vsn=2.0.0`;
                 if(!this.canUseWebSocket(wsUrl)) {
-                    // Fallback ke polling HTTP jika WebSocket diblokir oleh sandbox/iframe (seperti Canvas)
-                    this.startPollingFallback();
                     return;
                 }
 
@@ -952,30 +1121,35 @@
                         .channel(`public:${SUPABASE_TABLE_NAME}`)
                         .on('postgres_changes', { event: '*', schema: 'public', table: SUPABASE_TABLE_NAME }, (payload) => {
                             if(payload.new && payload.new.data) {
-                                const cloudData = payload.new.data;
-                                state = {
-                                    ...state,
-                                    ...cloudData,
-                                    supabaseUrl: state.supabaseUrl,
-                                    supabaseKey: state.supabaseKey
-                                };
+                                state = this.mergeCloudAndLocal(payload.new.data);
                                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
-                                this.renderCurrentView();
-                                this.showToast("Data diperbarui otomatis dari Cloud!", "success");
+                                this.updateDbStatusIndicator('connected');
+                                if(!document.getElementById('app-container').classList.contains('hidden')) {
+                                    this.renderCurrentView();
+                                }
                             }
                         })
                         .subscribe();
                 } catch(e) {
-                    console.warn("Realtime subscription failed, using polling fallback:", e);
-                    this.startPollingFallback();
+                    console.warn("Realtime subscription note:", e);
                 }
             },
 
             openSupabaseModal() {
                 const modal = document.getElementById('modal-supabase');
                 const content = document.getElementById('modal-supabase-content');
+                const errDetail = document.getElementById('supabase-error-detail');
                 document.getElementById('supabase-url-input').value = state.supabaseUrl || '';
                 document.getElementById('supabase-key-input').value = state.supabaseKey || '';
+
+                if(errDetail) {
+                    if(this.lastSyncError) {
+                        errDetail.innerText = `Detail Error: ${this.lastSyncError}`;
+                        errDetail.classList.remove('hidden');
+                    } else {
+                        errDetail.classList.add('hidden');
+                    }
+                }
                 
                 modal.classList.remove('hidden');
                 requestAnimationFrame(() => {
@@ -1036,9 +1210,11 @@
             },
 
             checkSession() {
-                const user = sessionStorage.getItem('cf_session_user_v3');
-                if(user) {
-                    this.currentUser = user;
+                const savedUser = sessionStorage.getItem('cf_session_user_v3');
+                if(savedUser) {
+                    const normalized = this.normalizeRoleName(savedUser);
+                    sessionStorage.setItem('cf_session_user_v3', normalized);
+                    this.currentUser = normalized;
                     this.enterApp(false);
                 }
             },
@@ -1151,7 +1327,7 @@
             },
 
             renderDashboard() {
-                document.getElementById('dash-user-name').innerText = this.currentUser === 'Saya' ? 'Sayang' : 'Babe';
+                document.getElementById('dash-user-name').innerText = this.currentUser;
                 document.getElementById('dash-view-mode').innerText = `DATA ${this.viewFilter.toUpperCase()}`;
 
                 const txs = this.getFilteredTransactions();
@@ -1461,6 +1637,7 @@
                     const newDate = document.getElementById('target-date').value;
                     if(newDate) state.targets.nikahDate = newDate;
                 }
+                state.settingsUpdatedAt = Date.now();
 
                 this.saveData();
                 this.renderPlanning();
@@ -1513,6 +1690,8 @@
 
             deleteMeeting(id) {
                 this.showConfirmDialog("Hapus Catatan Rapat?", "Yakin ingin menghapus catatan diskusi ini?", () => {
+                    if(!state.deletedMeetingIds) state.deletedMeetingIds = [];
+                    if(!state.deletedMeetingIds.includes(id)) state.deletedMeetingIds.push(id);
                     state.meetings = state.meetings.filter(m => m.id !== id);
                     this.saveData();
                     this.renderMeetings();
@@ -1590,6 +1769,7 @@
                     accountNumber: document.getElementById('bank-number-input').value.trim(),
                     accountHolder: document.getElementById('bank-holder-input').value.trim()
                 };
+                state.settingsUpdatedAt = Date.now();
                 this.saveData();
                 this.renderPlanning();
                 this.handleCategoryChange();
@@ -1758,6 +1938,8 @@
 
             deleteTx(id) {
                 this.showConfirmDialog("Hapus Catatan?", "Yakin mau hapus catatan ini? Target & tabungan juga akan menyesuaikan lho.", () => {
+                    if(!state.deletedTxIds) state.deletedTxIds = [];
+                    if(!state.deletedTxIds.includes(id)) state.deletedTxIds.push(id);
                     state.transactions = state.transactions.filter(t => t.id !== id);
                     this.saveData();
                     this.renderHistory();
